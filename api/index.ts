@@ -1,7 +1,15 @@
 import serverless from "serverless-http";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import app from "../src/app";
 import connectDB from "../src/db";
 
-connectDB(); // Connect to MongoDB once per serverless cold start
+let isDbConnected = false;
 
-export default serverless(app);
+// Serverless function
+export default async (req: VercelRequest, res: VercelResponse) => {
+  if (!isDbConnected) {
+    await connectDB();
+    isDbConnected = true;
+  }
+  return serverless(app)(req, res);
+};
