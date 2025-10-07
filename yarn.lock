@@ -88,7 +88,7 @@
 
 "@types/express@^5.0.3":
   version "5.0.3"
-  resolved "https://registry.npmjs.org/@types/express/-/express-5.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/@types/express/-/express-5.0.3.tgz#6c4bc6acddc2e2a587142e1d8be0bce20757e956"
   integrity sha512-wGA0NX93b19/dZC1J18tKWVIYWyyF2ZjT9vin/NRu0qzzvfVzWjs04iq2rQ3H65vCTQYlRqs3YHfY7zjdV+9Kw==
   dependencies:
     "@types/body-parser" "*"
@@ -112,9 +112,16 @@
   dependencies:
     mongoose "*"
 
-"@types/node@*", "@types/node@^24.7.0":
+"@types/node@*":
   version "24.7.0"
   resolved "https://registry.npmjs.org/@types/node/-/node-24.7.0.tgz"
+  integrity sha512-IbKooQVqUBrlzWTi79E8Fw78l8k1RNtlDDNWsFZs7XonuQSJ8oNYfEeclhprUldXISRMLzBpILuKgPlIxm+/Yw==
+  dependencies:
+    undici-types "~7.14.0"
+
+"@types/node@^24.7.0":
+  version "24.7.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.7.0.tgz#a34c9f0d3401db396782e440317dd5d8373c286f"
   integrity sha512-IbKooQVqUBrlzWTi79E8Fw78l8k1RNtlDDNWsFZs7XonuQSJ8oNYfEeclhprUldXISRMLzBpILuKgPlIxm+/Yw==
   dependencies:
     undici-types "~7.14.0"
@@ -338,7 +345,7 @@ diff@^4.0.1:
 
 dotenv@^17.2.3:
   version "17.2.3"
-  resolved "https://registry.npmjs.org/dotenv/-/dotenv-17.2.3.tgz"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.2.3.tgz#ad995d6997f639b11065f419a22fabf567cdb9a2"
   integrity sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==
 
 dunder-proto@^1.0.1:
@@ -389,7 +396,7 @@ etag@^1.8.1:
 
 express@^5.1.0:
   version "5.1.0"
-  resolved "https://registry.npmjs.org/express/-/express-5.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/express/-/express-5.1.0.tgz#d31beaf715a0016f0d53f47d3b4d7acf28c75cc9"
   integrity sha512-DT9ck5YIRU+8GYzzU5kT3eHGA5iL+1Zd0EutOmTE9Dtk+Tvuzd23VBU+ec7HPNSTxXYO55gPV/hq4pSBJDjFpA==
   dependencies:
     accepts "^2.0.0"
@@ -684,7 +691,7 @@ negotiator@^1.0.0:
 
 nodemon@^3.1.10:
   version "3.1.10"
-  resolved "https://registry.npmjs.org/nodemon/-/nodemon-3.1.10.tgz"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-3.1.10.tgz#5015c5eb4fffcb24d98cf9454df14f4fecec9bc1"
   integrity sha512-WDjw3pJ0/0jMFmyNDp3gvY2YizjLmmOUQo6DEBY+JgdvW/yQ9mEeSw6H5ythl5Ny2ytb7f9C2nIbjSxMNzbJXw==
   dependencies:
     chokidar "^3.5.2"
@@ -842,6 +849,11 @@ serve-static@^2.2.0:
     parseurl "^1.3.3"
     send "^1.2.0"
 
+serverless-http@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/serverless-http/-/serverless-http-4.0.0.tgz#2838ed6cbd23095cdd409ff0ec00c62ec929daf1"
+  integrity sha512-KKl9h1+VApX9y2vHsVMogf906UXBwO3FDYiWPzqS0mCjEEx4Sx91JrssbWA7RN43HBuxrtoh8MkocZPvjyGnLg==
+
 setprototypeof@1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/setprototypeof/-/setprototypeof-1.2.0.tgz"
@@ -949,7 +961,7 @@ tr46@^5.1.0:
 
 ts-node@^10.9.2:
   version "10.9.2"
-  resolved "https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.9.2.tgz#70f021c9e185bccdca820e26dc413805c101c71f"
   integrity sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==
   dependencies:
     "@cspotcode/source-map-support" "^0.8.0"
@@ -977,7 +989,7 @@ type-is@^2.0.0, type-is@^2.0.1:
 
 typescript@^5.9.3:
   version "5.9.3"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.3.tgz#5b4f59e15310ab17a216f5d6cf53ee476ede670f"
   integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
 
 undefsafe@^2.0.5:
