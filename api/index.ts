@@ -5,11 +5,13 @@ import connectDB from "../src/db";
 
 let isDbConnected = false;
 
-// Serverless function
+// Correctly typed serverless function
 export default async (req: VercelRequest, res: VercelResponse) => {
   if (!isDbConnected) {
     await connectDB();
     isDbConnected = true;
   }
-  return serverless(app)(req, res);
+
+  // await the serverless-http wrapper
+  await serverless(app)(req, res);
 };
