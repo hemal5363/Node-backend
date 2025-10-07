@@ -14,6 +14,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post("/users", async (req: Request, res: Response) => {
   try {
+    console.log(req.body);
     const user = await User.create(req.body);
     res.status(201).json(user);
   } catch (err) {
@@ -23,6 +24,7 @@ app.post("/users", async (req: Request, res: Response) => {
 
 app.get("/users", async (req: Request, res: Response) => {
   try {
+    console.log("Get all users");
     const users = await User.find();
     res.status(201).json(users);
   } catch (err) {

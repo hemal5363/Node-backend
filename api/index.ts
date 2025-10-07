@@ -11,7 +11,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     await connectDB();
     isDbConnected = true;
   }
-
+  console.log("Request received");
   // await the serverless-http wrapper
   await serverless(app)(req, res);
 };
