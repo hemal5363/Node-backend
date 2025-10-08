@@ -3,30 +3,21 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import app from "../src/app";
 import connectDB from "../src/db";
 
-let isDbConnected = false;
-const handler = serverless(app);
+let serverReady: any;
 
-export default async function (req: VercelRequest, res: VercelResponse) {
-  console.log("Request received");
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  console.log("➡️ Request received");
 
   try {
-    if (!isDbConnected) {
+    if (!serverReady) {
       await connectDB();
-      isDbConnected = true;
-      console.log("✅ MongoDB Connected");
+      serverReady = serverless(app);
+      console.log("✅ MongoDB connected and server ready");
     }
 
-    // 🚫 DO NOT use await here!
-    return handler(req, res);
-  } catch (err) {
-    console.error("❌ Error in /api:", err);
-    return res.status(500).json({ error: (err as Error).message });
+    return serverReady(req as any, res as any);
+  } catch (err: any) {
+    console.error("❌ Handler error:", err);
+    return res.status(500).json({ error: err.message });
   }
 }
-
-// import type { VercelRequest, VercelResponse } from '@vercel/node';
-
-// export default async function handler(req: VercelRequest, res: VercelResponse) {
-//   console.log('✅ /api route hit');
-//   return res.status(200).json({ message: 'Vercel API works!' });
-// }
