@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Routes
-app.use("/products", productRoutes);
+app.use("/api/v1/products", productRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript + Express + Vercel + Local!");
