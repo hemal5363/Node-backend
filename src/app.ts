@@ -8,32 +8,35 @@ app.use(cors());
 
 app.use(express.json());
 
+// Root route
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript + Express + Vercel + Local!");
 });
 
-app.post("/users", async (req: Request, res: Response) => {
-  console.log("Route /users hit");
+// Test route (for /api)
+app.get("/api", (req: Request, res: Response) => {
+  res.json({ message: "API is working fine" });
+});
 
-  const timer = setTimeout(() => {
-    console.log("Still waiting after 5s...");
-  }, 5000);
+// Create user
+app.post("/api/users", async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
+    console.log("POST /api/users");
     const user = await User.create(req.body);
     res.status(201).json(user);
-  } catch (err) {
-    res.status(400).json({ error: err });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
   }
 });
 
-app.get("/users", async (req: Request, res: Response) => {
+// Get users
+app.get("/api/users", async (req: Request, res: Response) => {
   try {
-    console.log("Get all users");
+    console.log("GET /api/users");
     const users = await User.find();
-    res.status(201).json(users);
-  } catch (err) {
-    res.status(400).json({ error: err });
+    res.json(users);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
   }
 });
 

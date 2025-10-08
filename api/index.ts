@@ -7,11 +7,19 @@ let isDbConnected = false;
 const handler = serverless(app);
 
 export default async function (req: VercelRequest, res: VercelResponse) {
-  if (!isDbConnected) {
-    await connectDB();
-    isDbConnected = true;
-  }
   console.log("Request received");
-  // ❌ Don't use await here — it never resolves properly in Vercel
-  return handler(req, res);
+
+  try {
+    if (!isDbConnected) {
+      await connectDB();
+      isDbConnected = true;
+      console.log("✅ MongoDB Connected");
+    }
+
+    // 🚫 DO NOT use await here!
+    return handler(req, res);
+  } catch (err) {
+    console.error("❌ Error in /api:", err);
+    return res.status(500).json({ error: (err as Error).message });
+  }
 }
