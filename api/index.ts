@@ -4,14 +4,14 @@ import app from "../src/app";
 import connectDB from "../src/db";
 
 let isDbConnected = false;
+const handler = serverless(app);
 
-// Correctly typed serverless function
-export default async (req: VercelRequest, res: VercelResponse) => {
+export default async function (req: VercelRequest, res: VercelResponse) {
   if (!isDbConnected) {
     await connectDB();
     isDbConnected = true;
   }
   console.log("Request received");
-  // await the serverless-http wrapper
-  await serverless(app)(req, res);
-};
+  // ❌ Don't use await here — it never resolves properly in Vercel
+  return handler(req, res);
+}

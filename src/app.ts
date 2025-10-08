@@ -13,6 +13,11 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/users", async (req: Request, res: Response) => {
+  console.log("Route /users hit");
+
+  const timer = setTimeout(() => {
+    console.log("Still waiting after 5s...");
+  }, 5000);
   try {
     console.log(req.body);
     const user = await User.create(req.body);
