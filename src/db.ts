@@ -1,14 +1,17 @@
 import mongoose from "mongoose";
 
+let isConnected = false;
+
 const connectDB = async () => {
-  if (mongoose.connection.readyState === 1) return; // Already connected
+  if (isConnected) return;
 
   try {
-    await mongoose.connect(process.env.MONGO_URI!);
-    console.log(`✅ MongoDB Connected`);
-  } catch (err) {
-    console.error("❌ MongoDB connection error:", err);
-    throw err; // important
+    const conn = await mongoose.connect(process.env.MONGO_URI!);
+    isConnected = true;
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error);
+    throw error;
   }
 };
 
