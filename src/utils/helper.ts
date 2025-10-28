@@ -11,3 +11,6 @@ export const formatDate = (val: Date | undefined): string | undefined => {
   };
   return new Intl.DateTimeFormat("en-US", options).format(val);
 };
+
+export const convertToCamelCase = (str: string): string =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();

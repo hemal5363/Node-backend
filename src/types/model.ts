@@ -8,3 +8,11 @@ export interface IProduct extends Document {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface IUser extends Document {
+  name: string;
+  email: string;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
+}

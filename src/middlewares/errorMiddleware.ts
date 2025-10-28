@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { convertToCamelCase } from "../utils/helper";
 
 export const asyncErrorHandler =
   (
@@ -26,6 +27,13 @@ export const globeErrorHandler = (
       const message = e.properties.message;
       errors[path] = message;
     });
+    err.status = 400;
+  }
+
+  if (err.code === 11000) {
+    Object.keys(err.keyValue).forEach(
+      (key) => (errors[key] = `${convertToCamelCase(key)} already exists`)
+    );
     err.status = 400;
   }
 
