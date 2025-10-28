@@ -55,3 +55,20 @@ export const deleteUser = asyncErrorHandler(
     });
   }
 );
+
+export const loginUser = asyncErrorHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await User.findOne({ email: req.body.email }).select(
+      "+password"
+    );
+    if (!user) {
+      const error = new CustomError("User not found", 404);
+      return next(error);
+    }
+    res.status(200).json({
+      success: true,
+      data: user,
+      message: "User logged in successfully",
+    });
+  }
+);
