@@ -5,12 +5,13 @@ import {
   getAllProducts,
   updateProduct,
 } from "../controllers/productsController";
+import { authorization } from "../controllers/authController";
 
 const router = Router();
 
 router.get("/", getAllProducts);
-router.post("/", createProduct);
-router.patch("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.post("/", authorization(["admin"]), createProduct);
+router.patch("/:id", authorization(["admin"]), updateProduct);
+router.delete("/:id", authorization(["admin"]), deleteProduct);
 
 export default router;

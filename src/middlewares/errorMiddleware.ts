@@ -37,6 +37,16 @@ export const globeErrorHandler = (
     err.status = 400;
   }
 
+  if (err.name === "JsonWebTokenError") {
+    err.status = 401;
+    errors.token = "Invalid token";
+  }
+
+  if (err.name === "TokenExpiredError") {
+    err.status = 401;
+    errors.token = "Token expired";
+  }
+
   res.status(err.status || 500).json({
     success: false,
     message: err.message || "Server Error",
