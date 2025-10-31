@@ -155,7 +155,7 @@ export const verifyToken = asyncErrorHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      const error = new CustomError("Not authorized to access this route", 401);
+      const error = new CustomError("Please provide token", 401);
       return next(error);
     }
     const decoded = await (
