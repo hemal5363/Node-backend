@@ -92,13 +92,15 @@ export const forgotPassword = asyncErrorHandler(
     }
     const resetToken = user.getResetPasswordToken();
     await user.save();
+    const baseUrl =
+      process.env.NODE_ENV === "production"
+        ? process.env.FRONTEND_DEV
+        : process.env.FRONTEND_LOCAL;
     try {
       await sendEmail({
         email: user.email,
         subject: "Password reset link",
-        message: `Click the link to reset your password: ${
-          req.protocol
-        }://${req.get("host")}/api/v1/users/reset-password/${resetToken}`,
+        message: `Click the link to reset your password: ${baseUrl}/reset-password/${resetToken}`,
       });
     } catch (error) {
       user.resetPasswordToken = undefined;

@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/nodemailer": "^7.0.3",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -29,6 +28,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.7.0",
+    "@types/nodemailer": "^7.0.3",
     "nodemon": "^3.1.10",
     "serverless-http": "^4.0.0",
     "ts-node": "^10.9.2",
