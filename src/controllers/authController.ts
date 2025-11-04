@@ -111,6 +111,9 @@ export const forgotPassword = asyncErrorHandler(
     }
     res.status(200).json({
       success: true,
+      data: {
+        resetToken,
+      },
       message: "Reset password token sent to email",
     });
   }
