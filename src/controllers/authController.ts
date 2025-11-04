@@ -144,10 +144,8 @@ export const resetPassword = asyncErrorHandler(
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-    const token = user.getSignedJwtToken();
     res.status(200).json({
       success: true,
-      token,
       message: "Password reset successfully",
     });
   }
