@@ -26,4 +26,5 @@ export interface IUSerMethods {
   getSignedJwtToken(): string;
   getResetPasswordToken(): string;
   changedPasswordAfter(JWTTimestamp: number | undefined): boolean;
+  hideSecureData(): void;
 }

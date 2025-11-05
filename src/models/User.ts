@@ -102,4 +102,11 @@ UserSchema.methods.changedPasswordAfter = function (JWTTimestamp: number) {
   return false;
 };
 
+UserSchema.methods.hideSecureData = function () {
+  this.password = undefined;
+  this.passwordChangedAt = undefined;
+  this.resetPasswordToken = undefined;
+  this.resetPasswordExpire = undefined;
+};
+
 export default mongoose.model<IUser, UserModel>("User", UserSchema);

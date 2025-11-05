@@ -24,6 +24,8 @@ export const register = asyncErrorHandler(
 
     const token = user.getSignedJwtToken();
 
+    user.hideSecureData();
+
     res.status(201).json({
       success: true,
       data: user,
@@ -70,9 +72,12 @@ export const loginUser = asyncErrorHandler(
 
     const token = user.getSignedJwtToken();
 
+    user.hideSecureData();
+
     res.status(200).json({
       success: true,
       token,
+      data: user,
       message: "User logged in successfully",
     });
   }
