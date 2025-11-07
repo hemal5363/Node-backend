@@ -2,7 +2,7 @@
   "name": "node-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "api/index.js",
   "scripts": {
     "build": "tsc",
     "start": "yarn build && node dist/server.js",
