@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { formatDate } from "../utils/helper";
 import { IUser, IUSerMethods } from "../types/model";
+import { USER_ROLES } from "../utils/constant";
 
 type UserModel = Model<IUser, {}, IUSerMethods>;
 
@@ -33,7 +34,7 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: [USER_ROLES.USER, USER_ROLES.ADMIN],
       default: "user",
     },
     created_at: {
