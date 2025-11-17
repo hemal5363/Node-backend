@@ -4,6 +4,7 @@ import morgan from "morgan";
 
 import productRoutes from "./routes/productsRoutes";
 import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
 import { globeErrorHandler } from "./middlewares/errorMiddleware";
 import { verifyToken } from "./controllers/authController";
 
@@ -18,6 +19,8 @@ app.use(morgan("dev"));
 app.use("/api/v1/products", verifyToken, productRoutes);
 
 app.use("/api/v1/auth", authRoutes);
+
+app.use("/api/v1/user", verifyToken, userRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript + Express + Vercel + Local!");

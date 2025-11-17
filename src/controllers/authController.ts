@@ -7,17 +7,6 @@ import { AuthenticatedRequest } from "../types/express";
 import sendEmail from "../config/email";
 import crypto from "crypto";
 
-export const getAllUsers = asyncErrorHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const users = await User.find({});
-    res.status(200).json({
-      success: true,
-      data: users,
-      message: "All users fetched successfully",
-    });
-  }
-);
-
 export const register = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.create(req.body);
@@ -31,20 +20,6 @@ export const register = asyncErrorHandler(
       data: user,
       token,
       message: "User created successfully",
-    });
-  }
-);
-
-export const deleteUser = asyncErrorHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) {
-      const error = new CustomError("User not found", 404);
-      return next(error);
-    }
-    res.status(200).json({
-      success: true,
-      message: "User deleted successfully",
     });
   }
 );
@@ -116,9 +91,6 @@ export const forgotPassword = asyncErrorHandler(
     }
     res.status(200).json({
       success: true,
-      data: {
-        resetToken,
-      },
       message: "Reset password token sent to email",
     });
   }
