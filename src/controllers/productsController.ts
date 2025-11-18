@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import Product from "../models/Product";
+
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
+import Product from "../models/Product";
 
 export const getAllProducts = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {

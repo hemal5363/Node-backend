@@ -1,10 +1,11 @@
 import mongoose, { Model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import { formatDate } from "../utils/helper";
+import jwt from "jsonwebtoken";
+
 import { IUser, IUSerMethods } from "../types/model";
 import { USER_ROLES } from "../utils/constant";
+import { formatDate } from "../utils/helper";
 
 type UserModel = Model<IUser, {}, IUSerMethods>;
 

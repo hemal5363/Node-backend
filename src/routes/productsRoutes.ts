@@ -1,11 +1,12 @@
 import { Router } from "express";
+
+import { authorization } from "../controllers/authController";
 import {
   createProduct,
   deleteProduct,
   getAllProducts,
   updateProduct,
 } from "../controllers/productsController";
-import { authorization } from "../controllers/authController";
 import { USER_ROLES } from "../utils/constant";
 
 const router = Router();

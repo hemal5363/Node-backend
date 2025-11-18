@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+
 import { IProduct } from "../types/model";
 import { formatDate } from "../utils/helper";
 

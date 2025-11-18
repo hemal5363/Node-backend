@@ -1,4 +1,6 @@
 import { Router } from "express";
+
+import { authorization } from "../controllers/authController";
 import {
   createUser,
   deleteUser,
@@ -6,7 +8,6 @@ import {
   updateUser,
   updateUserPassword,
 } from "../controllers/userController";
-import { authorization } from "../controllers/authController";
 import { USER_ROLES } from "../utils/constant";
 
 const router = Router();

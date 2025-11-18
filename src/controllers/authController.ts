@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import crypto from "crypto";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import util from "util";
+
+import sendEmail from "../config/email";
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
 import User from "../models/User";
-import util from "util";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { AuthenticatedRequest } from "../types/express";
-import sendEmail from "../config/email";
-import crypto from "crypto";
 
 export const register = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {

@@ -2,11 +2,11 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
 
-import productRoutes from "./routes/productsRoutes";
-import authRoutes from "./routes/authRoutes";
-import userRoutes from "./routes/userRoutes";
-import { globeErrorHandler } from "./middlewares/errorMiddleware";
 import { verifyToken } from "./controllers/authController";
+import { globeErrorHandler } from "./middlewares/errorMiddleware";
+import authRoutes from "./routes/authRoutes";
+import productRoutes from "./routes/productsRoutes";
+import userRoutes from "./routes/userRoutes";
 
 const app = express();
 

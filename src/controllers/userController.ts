@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
+import crypto from "crypto";
+
+import sendEmail from "../config/email";
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
 import User from "../models/User";
-import crypto from "crypto";
-import sendEmail from "../config/email";
-import { USER_UPDATE_FIELDS } from "../utils/constant";
 import { AuthenticatedRequest } from "../types/express";
+import { USER_UPDATE_FIELDS } from "../utils/constant";
 
 export const getAllUsers = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
