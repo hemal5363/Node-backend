@@ -6,7 +6,6 @@ import {
   deleteUser,
   getAllUsers,
   updateUser,
-  updateUserPassword,
 } from "../controllers/userController";
 import { USER_ROLES } from "../utils/constant";
 
@@ -16,6 +15,5 @@ router.get("/", authorization([USER_ROLES.ADMIN]), getAllUsers);
 router.post("/", authorization([USER_ROLES.ADMIN]), createUser);
 router.patch("/:id", authorization([USER_ROLES.ADMIN]), updateUser);
 router.delete("/:id", authorization([USER_ROLES.ADMIN]), deleteUser);
-router.patch("/me/update-password", updateUserPassword);
 
 export default router;

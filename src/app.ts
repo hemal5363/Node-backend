@@ -6,6 +6,7 @@ import { verifyToken } from "./controllers/authController";
 import { globeErrorHandler } from "./middlewares/errorMiddleware";
 import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productsRoutes";
+import meUserRoutes from "./routes/meUserRoutes";
 import userRoutes from "./routes/userRoutes";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/api/v1/products", verifyToken, productRoutes);
 
 app.use("/api/v1/auth", authRoutes);
 
+app.use("/api/v1/user/me", verifyToken, meUserRoutes);
 app.use("/api/v1/user", verifyToken, userRoutes);
 
 app.get("/", (req: Request, res: Response) => {

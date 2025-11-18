@@ -16,6 +16,8 @@ const UserSchema = new Schema(
       required: [true, "Please add a name"],
       maxlength: [50, "Name can not be more than 50 characters"],
       minlength: [2, "Name can not be less than 2 characters"],
+      trim: true,
+      match: [/^[a-zA-Z ]+$/, "Only characters and spaces are allowed"],
     },
     email: {
       type: String,
@@ -25,6 +27,7 @@ const UserSchema = new Schema(
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please add a valid email",
       ],
+      trim: true,
       lowercase: true,
     },
     password: {
@@ -32,6 +35,7 @@ const UserSchema = new Schema(
       required: [true, "Please add a password"],
       minlength: [6, "Password must be at least 6 characters"],
       select: false,
+      trim: true,
     },
     role: {
       type: String,

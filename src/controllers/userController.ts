@@ -85,13 +85,7 @@ export const createUser = asyncErrorHandler(
 
 export const updateUser = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    let updateData: { [key: string]: string } = {};
-    for (const key in req.body) {
-      if (USER_UPDATE_FIELDS.includes(key)) {
-        updateData[key] = req.body[key];
-      }
-    }
-    const user = await User.findByIdAndUpdate(req.params.id, updateData, {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -118,36 +112,6 @@ export const deleteUser = asyncErrorHandler(
     res.status(200).json({
       success: true,
       message: "User deleted successfully",
-    });
-  }
-);
-
-export const updateUserPassword = asyncErrorHandler(
-  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const { password, oldPassword } = req.body;
-    const user = await User.findById(req.user?.id).select("+password");
-    if (!user) {
-      const error = new CustomError("User not found", 404);
-      return next(error);
-    }
-    if (!password || !oldPassword) {
-      const error = new CustomError(
-        "Please provide password and old password",
-        400
-      );
-      return next(error);
-    }
-    const isMatch = await user.comparePassword(oldPassword);
-    if (!isMatch) {
-      const error = new CustomError("Invalid credentials", 401);
-      return next(error);
-    }
-    user.password = req.body.password;
-    user.passwordChangedAt = new Date();
-    await user.save();
-    res.status(200).json({
-      success: true,
-      message: "User password updated successfully",
     });
   }
 );
