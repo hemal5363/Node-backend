@@ -19,7 +19,6 @@ export const globeErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err);
   const errors: Record<string, string> = {};
 
   if (err.errors) {
@@ -57,11 +56,23 @@ export const globeErrorHandler = (
 
 export class CustomError extends Error {
   status: number;
+  errors?: Record<string, Record<string, string>>[];
 
-  constructor(message: string, status: number) {
+  constructor(message: string, status: number, field?: string, error?: string) {
     super(message);
     this.status = status;
     this.message = message;
+    this.errors =
+      field && error
+        ? [
+            {
+              properties: {
+                path: field,
+                message: error,
+              },
+            },
+          ]
+        : undefined;
     // Maintains proper stack trace for where error was thrown
     Error.captureStackTrace(this, this.constructor);
   }

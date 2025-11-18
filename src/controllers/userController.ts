@@ -8,14 +8,14 @@ import { AuthenticatedRequest } from "../types/express";
 import { USER_UPDATE_FIELDS } from "../utils/constant";
 
 export const getAllUsers = asyncErrorHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     let page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const sortBy = (req.query.sortBy as string) || "created_at"; // default sort field
     const order = (req.query.order as string) === "asc" ? 1 : -1; // asc or desc
     const search = (req.query.search as string) || "";
 
-    const filter: any = {};
+    const filter: any = { _id: { $ne: req.user?.id } };
     if (search.trim()) {
       filter.$or = [
         { name: { $regex: search, $options: "i" } }, // case-insensitive

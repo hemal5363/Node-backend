@@ -136,7 +136,12 @@ export const verifyToken = asyncErrorHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      const error = new CustomError("Please provide token", 401);
+      const error = new CustomError(
+        "Please provide token",
+        401,
+        "token",
+        "Please provide token"
+      );
       return next(error);
     }
     const decoded = await (
@@ -148,12 +153,22 @@ export const verifyToken = asyncErrorHandler(
 
     const user = await User.findById(decoded.id);
     if (!user) {
-      const error = new CustomError("User not found", 404);
+      const error = new CustomError(
+        "Invalid user token",
+        404,
+        "token",
+        "Invalid user token"
+      );
       return next(error);
     }
 
     if (user.changedPasswordAfter(decoded.iat)) {
-      const error = new CustomError("User recently changed password", 401);
+      const error = new CustomError(
+        "User recently changed password",
+        401,
+        "token",
+        "User recently changed password, please try with new login token"
+      );
       return next(error);
     }
     req.user = user;
