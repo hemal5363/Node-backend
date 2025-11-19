@@ -284,6 +284,8 @@ export const googleLogin = asyncErrorHandler(
     const token = user.getSignedJwtToken();
     user.hideSecureData();
 
+    await user.getProfileUrl();
+
     res.status(200).json({
       success: true,
       token,
