@@ -5,7 +5,6 @@ import sendEmail from "../config/email";
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
 import User from "../models/User";
 import { AuthenticatedRequest } from "../types/express";
-import { USER_UPDATE_FIELDS } from "../utils/constant";
 
 export const getAllUsers = asyncErrorHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {

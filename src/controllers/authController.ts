@@ -4,6 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import util from "util";
 
 import sendEmail from "../config/email";
+import { getGooglePayload } from "../config/google";
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
 import User from "../models/User";
 import { AuthenticatedRequest } from "../types/express";
@@ -185,3 +186,91 @@ export const authorization =
     }
     next();
   };
+
+export const googleRegister = asyncErrorHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { accessToken } = req.body;
+    if (!accessToken) {
+      const error = new CustomError("Please provide google access token", 400);
+      return next(error);
+    }
+
+    const googlePayload = await getGooglePayload(accessToken);
+    if (!googlePayload) {
+      const error = new CustomError("Invalid google access token", 400);
+      return next(error);
+    }
+
+    const { sub: googleId, email, name } = googlePayload;
+
+    const user = await User.findOne({ $or: [{ googleId }, { email }] });
+    if (user) {
+      const error = new CustomError(
+        "User already exists with this google account",
+        400
+      );
+      return next(error);
+    }
+
+    const password = crypto.randomBytes(10).toString("hex");
+
+    const newUser = await User.create({ email, googleId, name, password });
+    const token = newUser.getSignedJwtToken();
+    newUser.hideSecureData();
+
+    try {
+      await sendEmail({
+        email: newUser.email,
+        subject: "Welcome to Ecommerce",
+        message: `Your password is: ${password}`,
+      });
+    } catch (error) {
+      const customError = new CustomError("Email could not be sent", 500);
+      return next(customError);
+    }
+
+    res.status(201).json({
+      success: true,
+      token,
+      data: newUser,
+      message: "User created successfully",
+    });
+  }
+);
+
+export const googleLogin = asyncErrorHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { accessToken } = req.body;
+    if (!accessToken) {
+      const error = new CustomError("Please provide google access token", 400);
+      return next(error);
+    }
+
+    const googlePayload = await getGooglePayload(accessToken);
+    if (!googlePayload) {
+      const error = new CustomError("Invalid google access token", 400);
+      return next(error);
+    }
+
+    const { sub: googleId, email } = googlePayload;
+
+    const user = await User.findOne({ $or: [{ googleId }, { email }] });
+    if (!user) {
+      const error = new CustomError(
+        "User not found with this google account",
+        404
+      );
+      return next(error);
+    }
+
+    const token = user.getSignedJwtToken();
+    user.hideSecureData();
+
+    res.status(200).json({
+      success: true,
+      token,
+      data: user,
+      message: "User logged in successfully",
+    });
+  }
+);

@@ -42,6 +42,7 @@ const UserSchema = new Schema(
       enum: [USER_ROLES.USER, USER_ROLES.ADMIN],
       default: USER_ROLES.USER,
     },
+    googleId: String,
     created_at: {
       type: Date,
       default: Date.now,
