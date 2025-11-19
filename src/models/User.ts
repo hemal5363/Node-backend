@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
+import { deleteObjectInS3, getS3SignedUrl } from "../config/s3";
 import { IUser, IUSerMethods } from "../types/model";
 import { USER_ROLES } from "../utils/constant";
 import { formatDate } from "../utils/helper";
@@ -43,6 +44,8 @@ const UserSchema = new Schema(
       default: USER_ROLES.USER,
     },
     googleId: String,
+    profileKey: String,
+    profileUrl: String,
     created_at: {
       type: Date,
       default: Date.now,
@@ -114,6 +117,19 @@ UserSchema.methods.hideSecureData = function () {
   this.passwordChangedAt = undefined;
   this.resetPasswordToken = undefined;
   this.resetPasswordExpire = undefined;
+};
+
+UserSchema.methods.getProfileUrl = async function () {
+  if (this.profileKey) {
+    this.profileUrl = await getS3SignedUrl(this.profileKey);
+  }
+  return this
+};
+
+UserSchema.methods.deleteProfileUrl = async function () {
+  if (this.profileKey) {
+    await deleteObjectInS3(this.profileKey);
+  }
 };
 
 export default mongoose.model<IUser, UserModel>("User", UserSchema);

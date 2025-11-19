@@ -4,10 +4,12 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import util from "util";
 
 import sendEmail from "../config/email";
+import { putObjectInS3 } from "../config/s3";
 import { getGooglePayload } from "../config/google";
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
 import User from "../models/User";
 import { AuthenticatedRequest } from "../types/express";
+import { getFileFormUrl } from "../utils/helper";
 
 export const register = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -201,7 +203,7 @@ export const googleRegister = asyncErrorHandler(
       return next(error);
     }
 
-    const { sub: googleId, email, name } = googlePayload;
+    const { sub: googleId, email, name, picture } = googlePayload;
 
     const user = await User.findOne({ $or: [{ googleId }, { email }] });
     if (user) {
@@ -214,9 +216,25 @@ export const googleRegister = asyncErrorHandler(
 
     const password = crypto.randomBytes(10).toString("hex");
 
-    const newUser = await User.create({ email, googleId, name, password });
+    const { buffer, contentType } = await getFileFormUrl(picture);
+
+    const key = `profile/${email}-${Date.now()}.${
+      contentType.split("/")[1]
+    }` as const;
+
+    await putObjectInS3(key, buffer, contentType);
+
+    const newUser = await User.create({
+      email,
+      googleId,
+      name,
+      password,
+      profileKey: key,
+    });
     const token = newUser.getSignedJwtToken();
     newUser.hideSecureData();
+
+    await newUser.getProfileUrl();
 
     try {
       await sendEmail({

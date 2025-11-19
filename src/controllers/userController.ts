@@ -25,7 +25,7 @@ export const getAllUsers = asyncErrorHandler(
 
     const totalUsers = await User.countDocuments(filter);
 
-    let users = [];
+    let users;
 
     do {
       page -= 1;

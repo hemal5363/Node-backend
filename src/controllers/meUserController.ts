@@ -1,7 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import crypto from "crypto";
+import { NextFunction, Response } from "express";
 
-import sendEmail from "../config/email";
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
 import User from "../models/User";
 import { AuthenticatedRequest } from "../types/express";
@@ -85,6 +83,9 @@ export const deleteUserDetails = asyncErrorHandler(
       const error = new CustomError("User not found", 404);
       return next(error);
     }
+
+    await user.deleteProfileUrl();
+
     res.status(200).json({
       success: true,
       message: "User deleted successfully",

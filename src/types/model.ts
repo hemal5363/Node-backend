@@ -14,6 +14,9 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: string;
+  googleId?: string;
+  profileKey?: string;
+  profileUrl?: string;
   created_at: Date;
   updated_at: Date;
   passwordChangedAt?: Date;
@@ -27,4 +30,6 @@ export interface IUSerMethods {
   getResetPasswordToken(): string;
   changedPasswordAfter(JWTTimestamp: number | undefined): boolean;
   hideSecureData(): void;
+  getProfileUrl(): void;
+  deleteProfileUrl(): void;
 }

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const formatDate = (val: Date | undefined): string | undefined => {
   if (!val) return undefined;
   // Example format: "08 Oct 2025, 15:30"
@@ -14,3 +16,16 @@ export const formatDate = (val: Date | undefined): string | undefined => {
 
 export const convertToCamelCase = (str: string): string =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+export const getFileFormUrl = async (
+  imageUrl: string
+): Promise<{ buffer: Buffer; contentType: string }> => {
+  const response = await axios.get(imageUrl, {
+    responseType: "arraybuffer",
+  });
+
+  const contentType = response.headers["content-type"] || "image/jpeg";
+  const buffer = Buffer.from(response.data, "binary");
+
+  return { buffer, contentType };
+};
