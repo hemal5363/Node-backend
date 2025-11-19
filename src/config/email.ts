@@ -19,6 +19,10 @@ transporter
     console.log(error);
   });
 const sendEmail = async (options: EmailOptions) => {
+  console.log("process.env.SMTP_HOST", process.env.SMTP_HOST)
+  console.log("process.env.SMTP_PORT", process.env.SMTP_PORT)
+  console.log("process.env.SMTP_USERNAME", process.env.SMTP_USERNAME)
+  console.log("process.env.SMTP_PASSWORD", process.env.SMTP_PASSWORD)
   const message = {
     from: `${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`,
     to: options.email,
