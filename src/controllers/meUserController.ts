@@ -69,7 +69,12 @@ export const updateUserDetails = asyncErrorHandler(
       updateData = {
         profileKey: key,
       };
-
+      req.user?.deleteProfileUrl();
+    }
+    if (req.body.isImageDeleted === "true") {
+      updateData = {
+        profileKey: "",
+      };
       req.user?.deleteProfileUrl();
     }
     for (const key in req.body) {

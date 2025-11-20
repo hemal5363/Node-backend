@@ -123,7 +123,7 @@ UserSchema.methods.getProfileUrl = async function () {
   if (this.profileKey) {
     this.profileUrl = await getS3SignedUrl(this.profileKey);
   }
-  return this
+  return this;
 };
 
 UserSchema.methods.deleteProfileUrl = async function () {

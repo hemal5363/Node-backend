@@ -71,6 +71,7 @@ export const createUser = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const password = crypto.randomBytes(10).toString("hex");
     req.body.password = password;
+    req.body.profileUrl = undefined;
 
     if (req.file) {
       const { mimetype, buffer } = req.file;
@@ -103,6 +104,8 @@ export const createUser = asyncErrorHandler(
 
 export const updateUser = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    req.body.profileUrl = undefined;
+
     if (req.file) {
       const { mimetype, buffer } = req.file;
       const key = getFileKeyName(req.body.email, mimetype);
@@ -114,6 +117,14 @@ export const updateUser = asyncErrorHandler(
       }
 
       req.body.profileKey = key;
+    }
+
+    if (req.body.isImageDeleted === "true") {
+      if (req.body.profileKey) {
+        await deleteObjectInS3(req.body.profileKey);
+      }
+
+      req.body.profileKey = "";
     }
 
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
