@@ -9,7 +9,7 @@ import { getGooglePayload } from "../config/google";
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
 import User from "../models/User";
 import { AuthenticatedRequest } from "../types/express";
-import { getFileFormUrl } from "../utils/helper";
+import { getFileFormUrl, getFileKeyName } from "../utils/helper";
 
 export const register = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -52,6 +52,8 @@ export const loginUser = asyncErrorHandler(
     const token = user.getSignedJwtToken();
 
     user.hideSecureData();
+
+    await user.getProfileUrl();
 
     res.status(200).json({
       success: true,
@@ -218,9 +220,7 @@ export const googleRegister = asyncErrorHandler(
 
     const { buffer, contentType } = await getFileFormUrl(picture);
 
-    const key = `profile/${email}-${Date.now()}.${
-      contentType.split("/")[1]
-    }` as const;
+    const key = getFileKeyName(email, contentType);
 
     await putObjectInS3(key, buffer, contentType);
 

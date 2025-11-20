@@ -2,9 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import crypto from "crypto";
 
 import sendEmail from "../config/email";
+import { deleteObjectInS3, putObjectInS3 } from "../config/s3";
 import { asyncErrorHandler, CustomError } from "../middlewares/errorMiddleware";
 import User from "../models/User";
 import { AuthenticatedRequest } from "../types/express";
+import { getFileKeyName } from "../utils/helper";
 
 export const getAllUsers = asyncErrorHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -38,6 +40,13 @@ export const getAllUsers = asyncErrorHandler(
 
     page += 1;
 
+    users = await Promise.all(
+      users.map(async (user) => {
+        await user.getProfileUrl();
+        return user;
+      })
+    );
+
     res.status(200).json({
       success: true,
       data: {
@@ -62,6 +71,16 @@ export const createUser = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const password = crypto.randomBytes(10).toString("hex");
     req.body.password = password;
+
+    if (req.file) {
+      const { mimetype, buffer } = req.file;
+      const key = getFileKeyName(req.body.email, mimetype);
+
+      await putObjectInS3(key, buffer, mimetype);
+
+      req.body.profileKey = key;
+    }
+
     const user = await User.create(req.body);
     try {
       await sendEmail({
@@ -84,6 +103,19 @@ export const createUser = asyncErrorHandler(
 
 export const updateUser = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    if (req.file) {
+      const { mimetype, buffer } = req.file;
+      const key = getFileKeyName(req.body.email, mimetype);
+
+      await putObjectInS3(key, buffer, mimetype);
+
+      if (req.body.profileKey) {
+        await deleteObjectInS3(req.body.profileKey);
+      }
+
+      req.body.profileKey = key;
+    }
+
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -108,6 +140,9 @@ export const deleteUser = asyncErrorHandler(
       const error = new CustomError("User not found", 404);
       return next(error);
     }
+
+    await user.deleteProfileUrl();
+
     res.status(200).json({
       success: true,
       message: "User deleted successfully",

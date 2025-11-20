@@ -1,6 +1,20 @@
 import { Request } from "express";
-import { IUser } from "./model";
+import { Document } from "mongoose";
+
+import { IUser, IUSerMethods } from "./model";
 
 export interface AuthenticatedRequest extends Request {
-  user?: IUser;
+  user?:
+    | (Document<unknown, {}, IUser, {}, {}> &
+        Omit<
+          IUser &
+            Required<{
+              _id: unknown;
+            }> & {
+              __v: number;
+            },
+          keyof IUSerMethods
+        > &
+        IUSerMethods)
+    | null;
 }

@@ -29,3 +29,7 @@ export const getFileFormUrl = async (
 
   return { buffer, contentType };
 };
+
+export const getFileKeyName = (email: string, mimetype: string) => {
+  return `profile/${email}-${Date.now()}.${mimetype.split("/")[1]}`;
+};

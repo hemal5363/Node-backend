@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import fileUpload from "../config/multer";
 import {
   deleteUserDetails,
   getUserDetails,
@@ -10,7 +11,7 @@ import {
 const router = Router();
 
 router.get("/", getUserDetails);
-router.patch("/", updateUserDetails);
+router.patch("/", fileUpload.single("profileImage"), updateUserDetails);
 router.delete("/", deleteUserDetails);
 router.patch("/update-password", updateUserPassword);
 
